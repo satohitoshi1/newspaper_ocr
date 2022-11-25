@@ -20,6 +20,7 @@ txt = tool.image_to_string(
     builder=pyocr.builders.TextBuilder(tesseract_layout=4),  # 期待される出力のタイプを指定
 )
 
+
 print(txt)
 
 with open("text.txt", mode="w") as f:
