@@ -6,6 +6,9 @@ from tkinter import filedialog
 from tkinter import messagebox
 import os
 from Tes import Tes
+from poppler import poppler
+
+image_weather = []
 
 
 # ファイルの参照処理
@@ -20,11 +23,32 @@ def click_refer_button():
 def click_export_button():
     path = file_path.get()
     if path[-4:] == '.png':
-        f = Tes()
-        text_data = f
+        PNG = Tes()
+        text_data = PNG
         textBox.insert(END, text_data)
+    elif path[-4:] == '.pdf':
+        PDF = poppler()
+        PDF_PNG = Tes()
+        textBox.insert(END, PDF_PNG)
     else:
-        textBox.insert(END, '\nファイルがpngファイルではありません')
+        # 画面作成
+        version = tkinter.Tcl().eval('info patchlevel')
+        window = tkinter.Tk()
+        window.geometry("1200x2500")
+        window.title("画像表示：" + version)
+
+        # キャンバス作成
+        canvas = tkinter.Canvas(window, bg="#deb887", height=800, width=2000)
+        # キャンバス表示
+        canvas.place(x=0, y=0)
+
+        # イメージ作成
+        image_weather.append(tkinter.PhotoImage(file=r"C:\Users\user\PYTHON\newspaper_ocr\ruwater.png", master=window))
+        # キャンバスにイメージを表示
+        canvas.create_image(0, 0, image=image_weather, anchor=tkinter.NW)
+        textBox.insert(END, '\n読み込みができない種類のファイルです')
+        # input("Press enter to start operations...")
+        textBox.delete(1.0, tkinter.END)
 
 
 if __name__ == '__main__':
@@ -57,7 +81,7 @@ if __name__ == '__main__':
     frame2.grid()
 
     # テキスト出力ボタンの作成
-    export_button = ttk.Button(frame2, text='ファイルの中身を出力', command=click_export_button, width=20)
+    export_button = ttk.Button(frame2, text='出力(PDFかPNGしか使えませんよ)', command=click_export_button, width=40)
     export_button.grid(row=0, column=0)
 
     # テキスト出力ボックスの作成
